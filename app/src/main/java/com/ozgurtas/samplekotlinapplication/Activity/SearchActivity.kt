@@ -1,8 +1,10 @@
 package com.ozgurtas.samplekotlinapplication.Activity
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
 import com.ozgurtas.samplekotlinapplication.Adapter.SearchAdapter
 import com.ozgurtas.samplekotlinapplication.Connection.RestControllerFactory
@@ -13,6 +15,10 @@ import kotlinx.android.synthetic.main.activity_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+
 
 /**
  * Created by Ozgur on 18.01.2018.
@@ -26,14 +32,23 @@ class SearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        btnSearch.setOnClickListener {
-            val searchTerm = etSearch.text.toString()
-            if (!searchTerm.isEmpty()) {
-                getResult(searchTerm)
-            } else {
-                etSearch.error = "Please enter search term"
-            }
-        }
+        //EditText search listener on keyboard search icon
+        etSearch.setOnEditorActionListener(TextView.OnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val searchTerm = textView.text.toString()
+                if (searchTerm.isNotEmpty()) {
+                    //Hide keyboard after typing
+                    val inputManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                    getResult(searchTerm)
+                } else {
+                    etSearch.error = "Please enter search term"
+                }
+                return@OnEditorActionListener true
+            } else
+                return@OnEditorActionListener false
+        })
     }
 
     //Connect the Search API
@@ -47,16 +62,24 @@ class SearchActivity : BaseActivity() {
                     hideLoadingDialog()
                     if (response.isSuccessful) {
                         if (response.code() == 200) {
-                            if (resultList == null) {
-                                resultList = ArrayList()
-                                resultList?.addAll(response.body()!!)
+                            if (response.body()!!.isNotEmpty()) {
+                                rvSearch.visibility = View.VISIBLE
+                                tvResult.visibility = View.GONE
+                                if (resultList == null) {
+                                    resultList = ArrayList()
+                                    resultList?.addAll(response.body()!!)
+                                } else {
+                                    resultList?.clear()
+                                    resultList?.addAll(response.body()!!)
+                                }
+                                val adapter = SearchAdapter(resultList)
+                                rvSearch.layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayout.VERTICAL, false)
+                                rvSearch.adapter = adapter
                             } else {
-                                resultList?.clear()
-                                resultList?.addAll(response.body()!!)
+                                rvSearch.visibility = View.GONE
+                                tvResult.visibility = View.VISIBLE
+                                tvResult.text = "No result about " + searchTerm
                             }
-                            val adapter = SearchAdapter(resultList)
-                            rvSearch.layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayout.VERTICAL, false)
-                            rvSearch.adapter = adapter
                             etSearch.text.clear()
                         } else {
                             showToast(response.message()?.toString())

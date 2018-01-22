@@ -9,21 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Enter city name or zipcode"/>
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:hint="Enter city name or zipcode"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"/>
 
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Search"/>
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/red"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvSearch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
 
