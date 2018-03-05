@@ -28,10 +28,7 @@ class SearchActivity : BaseActivity() {
 
     private var resultList: ArrayList<SearchResult>? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-
+    override fun onCreateFinished(savedInstanceState: Bundle?) {
         //EditText search listener on keyboard search icon
         etSearch.setOnEditorActionListener(TextView.OnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -49,6 +46,10 @@ class SearchActivity : BaseActivity() {
             } else
                 return@OnEditorActionListener false
         })
+    }
+
+    override fun getContentViewId(): Int {
+        return R.layout.activity_search
     }
 
     //Connect the Search API

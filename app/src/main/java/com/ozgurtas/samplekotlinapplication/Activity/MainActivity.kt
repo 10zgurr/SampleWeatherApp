@@ -17,10 +17,7 @@ class MainActivity : BaseActivity() {
 
     private val REQUEST_LOCATION = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    override fun onCreateFinished(savedInstanceState: Bundle?) {
         //Fill the Spinner from 1 to 10
         val arrayList = (1..10).map { it.toString() + "" }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayList)
@@ -42,6 +39,10 @@ class MainActivity : BaseActivity() {
         btnLocation.setOnClickListener {
             NavigationHelper().getInstance().startSearchActivity(this@MainActivity)
         }
+    }
+
+    override fun getContentViewId(): Int {
+        return R.layout.activity_main
     }
 
     //Ask Location Permission to the User

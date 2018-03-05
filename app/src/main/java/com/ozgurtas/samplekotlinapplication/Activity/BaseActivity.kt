@@ -10,12 +10,17 @@ import android.widget.Toast
  * Created by Ozgur on 17.01.2018.
  */
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     private var dialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val contentViewId = getContentViewId()
+        setContentView(contentViewId)
+
+        onCreateFinished(savedInstanceState)
 
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // set all screens to portrait mode
     }
@@ -32,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
 
     //Show Progress Dialog
     protected fun showLoadingDialog() {
-        if (dialog == null && !BaseActivity().isFinishing) {
+        if (dialog == null && !this@BaseActivity.isFinishing) {
             dialog = ProgressDialog(this)
             dialog?.setMessage("Loading...")
             dialog?.setCancelable(false)
@@ -42,11 +47,16 @@ open class BaseActivity : AppCompatActivity() {
 
     //Hide Progress Dialog
     protected fun hideLoadingDialog() {
-        if (dialog != null && !BaseActivity().isFinishing && dialog!!.isShowing) {
+        if (dialog != null && !this@BaseActivity.isFinishing && dialog!!.isShowing) {
             dialog!!.dismiss()
             dialog = null
         }
     }
 
+    //Show the toast message to the user
     protected fun showToast(message: String?) = Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+
+    //Abstract class allows us to use only single onCreate() and single setContentView() methods on the other inherited classes
+    protected abstract fun onCreateFinished(savedInstanceState: Bundle?)
+    protected abstract fun getContentViewId(): Int
 }

@@ -20,14 +20,15 @@ import retrofit2.Response
 
 class CurrentWeatherActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_weather_result)
-
+    override fun onCreateFinished(savedInstanceState: Bundle?) {
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
         getCurrentResult(latitude, longitude)
+    }
+
+    override fun getContentViewId(): Int {
+        return R.layout.activity_weather_result
     }
 
     //Connect the Current Weather API
