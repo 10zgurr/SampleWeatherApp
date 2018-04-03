@@ -8,7 +8,7 @@ import com.ozgurtas.samplekotlinapplication.Adapter.CurrentWeatherAdapter
 import com.ozgurtas.samplekotlinapplication.Connection.RestControllerFactory
 import com.ozgurtas.samplekotlinapplication.Model.Response.CurrentWeather
 import com.ozgurtas.samplekotlinapplication.R
-import com.ozgurtas.samplekotlinapplication.Utils.Constants
+import com.ozgurtas.samplekotlinapplication.Utils.Constants.Companion.API_KEY
 import kotlinx.android.synthetic.main.activity_weather_result.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,7 +35,7 @@ class CurrentWeatherActivity : BaseActivity() {
     private fun getCurrentResult(latitude: Double, longitude: Double) {
         val coords: String = latitude.toString() + "," + longitude.toString()
         showLoadingDialog()
-        val call = RestControllerFactory().getInstance().getWeatherFactory()?.getCurrentWeather(Constants().apiKey, coords)
+        val call = RestControllerFactory.getWeatherFactory()?.getCurrentWeather(API_KEY, coords)
         call?.enqueue(object : Callback<CurrentWeather> {
 
             override fun onResponse(call: Call<CurrentWeather>?, response: Response<CurrentWeather>?) {

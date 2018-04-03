@@ -11,18 +11,9 @@ import java.util.concurrent.TimeUnit
  * Created by Ozgur on 15.01.2018.
  */
 
-class RestControllerFactory {
+object RestControllerFactory {
 
-    private var instance: RestControllerFactory? = null
     private var timeoutInterval: Long = 30
-
-    //Singleton Pattern
-    fun getInstance(): RestControllerFactory {
-        if (instance == null) {
-            instance = RestControllerFactory()
-        }
-        return instance as RestControllerFactory
-    }
 
     private var weatherMapService: WeatherMapService? = null
 

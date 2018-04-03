@@ -5,5 +5,7 @@ package com.ozgurtas.samplekotlinapplication.Utils
  */
 
 class Constants {
-    val apiKey = "f7c401e8301a4de7aa285130181701"
+    companion object {
+        const val API_KEY = "f7c401e8301a4de7aa285130181701"
+    }
 }

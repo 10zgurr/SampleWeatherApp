@@ -9,7 +9,7 @@ import com.ozgurtas.samplekotlinapplication.Connection.RestControllerFactory
 import com.ozgurtas.samplekotlinapplication.Model.Forecastday
 import com.ozgurtas.samplekotlinapplication.Model.Response.ForecastWeather
 import com.ozgurtas.samplekotlinapplication.R
-import com.ozgurtas.samplekotlinapplication.Utils.Constants
+import com.ozgurtas.samplekotlinapplication.Utils.Constants.Companion.API_KEY
 import kotlinx.android.synthetic.main.activity_forecast_weather.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +37,7 @@ class ForeCastWeatherActivity : BaseActivity() {
     private fun getForecastResult(latitude: Double, longitude: Double, day: String) {
         val coords: String = latitude.toString() + "," + longitude.toString()
         showLoadingDialog()
-        val call = RestControllerFactory().getInstance().getWeatherFactory()?.getForecastWeather(Constants().apiKey, coords, day)
+        val call = RestControllerFactory.getWeatherFactory()?.getForecastWeather(API_KEY, coords, day)
         call?.enqueue(object : Callback<ForecastWeather> {
 
             override fun onResponse(call: Call<ForecastWeather>?, response: Response<ForecastWeather>?) {

@@ -33,7 +33,7 @@ class SearchAdapter(private var resultList: ArrayList<SearchResult>?) : Recycler
             itemView.tvCountry.text = "Country : " + resultItem.country
             itemView.setOnClickListener {
                 //Redirect the User to show current weather of every single item
-                NavigationHelper().getInstance().startCurrentWeatherActivity(itemView.context, resultItem.lat?.toDouble(), resultItem.lon?.toDouble())
+                NavigationHelper.startCurrentWeatherActivity(itemView.context, resultItem.lat?.toDouble(), resultItem.lon?.toDouble())
             }
         }
     }

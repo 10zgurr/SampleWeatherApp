@@ -10,7 +10,6 @@ import com.ozgurtas.samplekotlinapplication.Adapter.SearchAdapter
 import com.ozgurtas.samplekotlinapplication.Connection.RestControllerFactory
 import com.ozgurtas.samplekotlinapplication.Model.Response.SearchResult
 import com.ozgurtas.samplekotlinapplication.R
-import com.ozgurtas.samplekotlinapplication.Utils.Constants
 import kotlinx.android.synthetic.main.activity_search.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,6 +17,7 @@ import retrofit2.Response
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.ozgurtas.samplekotlinapplication.Utils.Constants.Companion.API_KEY
 
 
 /**
@@ -55,7 +55,7 @@ class SearchActivity : BaseActivity() {
     //Connect the Search API
     private fun getResult(searchTerm: String) {
         showLoadingDialog()
-        val call = RestControllerFactory().getInstance().getWeatherFactory()?.getSearchResult(Constants().apiKey, searchTerm)
+        val call = RestControllerFactory.getWeatherFactory()?.getSearchResult(API_KEY, searchTerm)
         call?.enqueue(object : Callback<List<SearchResult>> {
 
             override fun onResponse(call: Call<List<SearchResult>>?, response: Response<List<SearchResult>>?) {

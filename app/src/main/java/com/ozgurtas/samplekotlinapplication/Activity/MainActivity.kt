@@ -26,18 +26,18 @@ class MainActivity : BaseActivity() {
         btnCurrent.setOnClickListener {
             val location = getLocation()
             if (location != null)
-                NavigationHelper().getInstance().startCurrentWeatherActivity(this@MainActivity, location.latitude, location.longitude)
+                NavigationHelper.startCurrentWeatherActivity(this@MainActivity, location.latitude, location.longitude)
         }
 
         btnForecast.setOnClickListener {
             val location = getLocation()
             val quantity = spinnerQuantity.selectedItem.toString()
             if (location != null)
-                NavigationHelper().getInstance().startForecastWeatherActivity(this@MainActivity, location.latitude, location.longitude, quantity)
+                NavigationHelper.startForecastWeatherActivity(this@MainActivity, location.latitude, location.longitude, quantity)
         }
 
         btnLocation.setOnClickListener {
-            NavigationHelper().getInstance().startSearchActivity(this@MainActivity)
+            NavigationHelper.startSearchActivity(this@MainActivity)
         }
     }
 
@@ -60,12 +60,16 @@ class MainActivity : BaseActivity() {
 
     //Get Location Info After Permission
     private fun getLocation(): Location? = if (isLocationPermissionGranted()) {
-        val lm: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        if (location != null)
-            location as Location
-        else {
-            showToast("Please open your location service")
+        try {
+            val lm: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            if (location != null)
+                location as Location
+            else {
+                showToast("Please open your location service")
+                null
+            }
+        } catch (exception: SecurityException) {
             null
         }
     } else
